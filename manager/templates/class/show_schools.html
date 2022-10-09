@@ -1,0 +1,15 @@
+{% extends "class/base.html" %}
+{% block content %}
+    <h3 class="text-center">Your Schools</h3>
+
+    <div class="d-flex justify-content-center text-center">
+        {% for school in schools %}
+            <div class="card w-75">
+                <div class="card-body">
+                    <h5 class="card-title">{{ school.school_name }}</h5>
+                    <a href="{% url 'school-manage' school.id %}" class="btn btn-primary">Manage</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

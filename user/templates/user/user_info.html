@@ -1,0 +1,15 @@
+{% extends "class/base.html" %}
+{% block content %}
+    <div class="text-center">
+        <h1>User Info</h1>
+
+        <div class="card">
+            <h5 class="card-header">{{ user.username }}</h5>
+            <div class="card-body">
+            <h5 class="card-title">Joined</h5>
+            <p class="card-text">{{ user.date_joined }}</p>
+            <a href="{% url 'user-delete' user.id %}" class="btn btn-danger">Delete Account</a>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
