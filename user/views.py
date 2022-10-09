@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm
+from .forms import UserRegistrationForm, TeacherRegistrationForm
 from django.contrib import messages
-from django.views.generic import DeleteView
+from django.views.generic import DeleteView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from .models import TeacherAccount
+from manager.models import School
 
 def register(request):
     if request.method == 'POST':
@@ -18,6 +20,7 @@ def register(request):
     
     return render(request, 'user/register.html', {'form' : form})
 
+
 def user_info(request):
     return render(request, 'user/user_info.html')
 
@@ -30,3 +33,11 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         user = self.get_object()
         return self.request.user == user
 
+class CreateTeacherAccount(LoginRequiredMixin, CreateView):
+    model = TeacherAccount
+    fields = ['username', 'password']
+
+    def form_valid(self, form):
+        school = School.objects.filter(id=self.kwargs['pk']).first()
+        form.instance.school = school
+        return super().form_valid(form)
