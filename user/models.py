@@ -7,8 +7,5 @@ class TeacherAccount(models.Model):
     password = models.CharField(max_length=255)
     school = models.ForeignKey(School, on_delete=models.CASCADE)
 
-    def get_absolute_url(self):
-        return reverse('school-show')
-
     def __str__(self):
         return self.username

@@ -8,7 +8,9 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = ['username', 'password1', 'password2']
 
-class TeacherRegistrationForm(UserCreationForm):
+class TeacherRegistrationForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
     class Meta:
         model = TeacherAccount
-        fields = ['username', 'password1', 'password2']
+        fields = ['username', 'password']

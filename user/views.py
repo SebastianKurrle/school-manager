@@ -7,9 +7,12 @@ from django.contrib.auth.models import User
 from .models import TeacherAccount
 from manager.models import School
 
+#views
+
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
+
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -20,6 +23,29 @@ def register(request):
     
     return render(request, 'user/register.html', {'form' : form})
 
+
+def teacher_register(request, pk):
+    if request.method == 'POST':
+        form = TeacherRegistrationForm(request.POST)
+        if form.is_valid():
+            school = School.objects.filter(id=pk).first()
+            form.instance.school = school
+
+            if check_teacher_name_exitst(form.instance.username, school):
+                context = {
+                    'form' : TeacherRegistrationForm()
+                }
+                messages.warning(request, f'The username already exists')
+                return render(request, 'user/teacheraccount_form.html', context)
+
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'The teacher {username} has been created!')
+            return redirect('school-manage', pk=pk)
+    else:
+        form = TeacherRegistrationForm()
+        
+    return render(request, 'user/teacheraccount_form.html', {'form' : form})
 
 def user_info(request):
     return render(request, 'user/user_info.html')
@@ -33,11 +59,13 @@ class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         user = self.get_object()
         return self.request.user == user
 
-class CreateTeacherAccount(LoginRequiredMixin, CreateView):
-    model = TeacherAccount
-    fields = ['username', 'password']
+# extra functions
 
-    def form_valid(self, form):
-        school = School.objects.filter(id=self.kwargs['pk']).first()
-        form.instance.school = school
-        return super().form_valid(form)
+def check_teacher_name_exitst(name, school):
+    school_teacher = TeacherAccount.objects.filter(school=school)
+
+    for teacher in school_teacher:
+        if teacher.username == name:
+            return True
+    
+    return False
