@@ -1,0 +1,7 @@
+{% extends "manager/base.html" %}
+{% block content %}
+    <h3>Results for {{ searched_school }}</h3>
+    {% for res in results %}
+        <p>{{ res.school_name }}</p>
+    {% endfor %}
+{% endblock content %}

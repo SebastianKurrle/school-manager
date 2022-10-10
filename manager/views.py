@@ -17,6 +17,22 @@ def show_own_schools(request):
 
     return render(request, 'manager/show_schools.html', context)
 
+def search_school(request):
+    return render(request, 'manager/search_school.html')
+
+def searched_school(request):
+    if request.method == 'POST':
+        searched_school = request.POST['searched_school']
+
+        context = {
+            'searched_school' : searched_school,
+            'results' : School.objects.filter(school_name__startswith=searched_school).all()
+        }
+
+        return render(request, 'manager/searched_schools.html', context)
+    
+    return render(request, 'manager/searched_schools.html')
+
 class SchoolCreateView(LoginRequiredMixin, CreateView):
     model = School
     fields = ['school_name']

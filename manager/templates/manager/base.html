@@ -38,7 +38,10 @@
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login</a>
+                            <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Login to Manage Schools</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'school-search' %}">Search School and Login</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{% url 'register' %}">Register</a>

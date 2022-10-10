@@ -1,0 +1,14 @@
+{% extends "manager/base.html" %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST" action="{% url 'searched-school' %}">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Search School and Login</legend>
+            </fieldset>
+
+            <input class="form-control mr-sm-2 mb-3" type="search" placeholder="Search School" aria-label="Search" name="searched_school">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+{% endblock content %}
