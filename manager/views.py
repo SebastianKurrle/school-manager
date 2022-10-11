@@ -3,9 +3,19 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import School
+from django.core import serializers
 
-@login_required
+# views
+
 def home(request):
+    set_default_cookie(request)
+    
+    if request.user.is_authenticated:
+        return render(request, 'manager/manager_home.html')
+    
+    if request.session['teacher_acc'] != None:
+        return render(request, 'manager/teacher_home.html')
+
     return render(request, 'manager/home.html')
 
 @login_required
@@ -48,3 +58,9 @@ class ManageSchoolView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def test_func(self):
         school = self.get_object()
         return self.request.user == school.creator
+
+# extra functions
+
+def set_default_cookie(request):
+    if 'teacher_acc' not in request.session:
+        request.session.setdefault('teacher_acc', None)
