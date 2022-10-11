@@ -1,0 +1,14 @@
+{% extends "manager/base.html" %}
+{% block content %}
+    <div class="text-center">
+        <h1>Teacher Profile</h1>
+
+        <div class="card">
+            <h5 class="card-header">{{ teacher.username }}</h5>
+            <div class="card-body">
+            <h5 class="card-title">School</h5>
+            <p class="card-text">{{ teacher.school.school_name }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

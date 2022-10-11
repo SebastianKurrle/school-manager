@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -14,7 +14,10 @@ def home(request):
         return render(request, 'manager/manager_home.html')
     
     if request.session['teacher_acc'] != None:
-        return render(request, 'manager/teacher_home.html')
+        context = {
+            'is_teacher' : True
+        }
+        return render(request, 'manager/teacher_home.html', context)
 
     return render(request, 'manager/home.html')
 

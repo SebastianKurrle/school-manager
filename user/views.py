@@ -67,6 +67,25 @@ def teacher_login(request, pk):
 
     return render(request, 'user/teacher_login.html')
 
+def teacher_logout(request):
+    request.session['teacher_acc'] = None
+    return redirect('home')
+
+def teacher_profile(request):
+    is_teacher = request.session['teacher_acc'] != None
+    if is_teacher == False:
+        messages.warning(request, f'You are not loged in as an teacher!')
+        return redirect('home')
+
+    teacher_json = list(serializers.deserialize('json', request.session['teacher_acc']))
+
+    context = {
+        'teacher' : teacher_json[0].object,
+        'is_teacher' : is_teacher
+    }
+
+    return render(request, 'user/teacher_profile.html', context)
+
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = User
     success_url = '/'
