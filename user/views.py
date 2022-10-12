@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from .forms import UserRegistrationForm, TeacherRegistrationForm
+from .forms import UserRegistrationForm, TeacherRegistrationForm, StudentRegistrationForm
 from django.contrib import messages
 from django.views.generic import DeleteView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
-from .models import TeacherAccount
+from .models import TeacherAccount, StudentAccount
 from manager.models import School
 from django.core import serializers
 
@@ -46,6 +46,16 @@ def teacher_register(request, pk):
         form = TeacherRegistrationForm()
         
     return render(request, 'user/teacheraccount_form.html', {'form' : form})
+
+def student_register(request, pk):
+    if request.method == 'POST':
+        form = StudentRegistrationForm(request.POST)
+        if form.is_valid():
+            school = School.objects.filter(id=pk).first()
+    else:
+        form = StudentRegistrationForm()
+    
+    return render(request, 'user/studentaccount_form.html', {'form' : form})
 
 def user_info(request):
     return render(request, 'user/user_info.html')
@@ -102,6 +112,15 @@ def check_teacher_name_exists(name, school):
 
     for teacher in school_teacher:
         if teacher.username == name:
+            return True
+    
+    return False
+
+def check_student_name_exists(name, school):
+    school_students = StudentAccount.objects.filter(school=school)
+
+    for student in school_students:
+        if student.username == name:
             return True
     
     return False

@@ -9,8 +9,8 @@
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item"><a href="{% url 'teacher-create' object.id %}">Add new teacher account</a></li>
-              <li class="list-group-item"><a href="#">Add new student account</a></li>
-              <li class="list-group-item"><a href="#">Add new class</a></li>
+              <li class="list-group-item"><a href="{% url 'student-create' object.id %}">Add new student account</a></li>
+              <li class="list-group-item"><a href="{% url 'class-create' object.id %}">Add new class</a></li>
             </ul>
           </div>
     </div>
