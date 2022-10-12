@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import School
+from .models import School, Class
 from django.core import serializers
 
 # views
@@ -52,6 +52,15 @@ class SchoolCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
+        return super().form_valid(form)
+
+class ClassCreateView(LoginRequiredMixin, CreateView):
+    model = Class
+    fields = ['class_name']
+
+    def form_valid(self, form):
+        school = School.objects.filter(id=self.kwargs['pk']).first()
+        form.instance.school = school
         return super().form_valid(form)
 
 class ManageSchoolView(LoginRequiredMixin, UserPassesTestMixin, DetailView):

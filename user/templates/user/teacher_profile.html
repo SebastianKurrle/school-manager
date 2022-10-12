@@ -8,7 +8,7 @@
             <div class="card-body">
             <h5 class="card-title">School</h5>
             <p class="card-text">{{ teacher.school.school_name }}</p>
-            </div>
+            <a href="{% url 'teacher-logout' %}" class="btn btn-danger">Logout</a>
         </div>
     </div>
 {% endblock content %}
