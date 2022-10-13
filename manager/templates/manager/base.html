@@ -48,6 +48,9 @@
                         </li>
                     {% elif is_student %}
                         <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">{{ student.student_class }}</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{% url 'student-profile' %}">Profile</a>
                         </li>
                         <li class="nav-item">

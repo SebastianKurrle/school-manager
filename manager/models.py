@@ -22,3 +22,12 @@ class Class(models.Model):
     def get_absolute_url(self):
         return reverse('school-show')
 
+class Subject(models.Model):
+    name = models.CharField(max_length=255)
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name + ' ' + self.school.school_name
+
+    def get_absolute_url(self):
+        return reverse('home')

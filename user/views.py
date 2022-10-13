@@ -62,7 +62,7 @@ def student_register(request, pk):
                     'form' : StudentRegistrationForm()
                 }
                 messages.warning(request, f'The username already exists!')
-                return render(request, 'user/studentaccount_fomr.html', context)
+                return render(request, 'user/studentaccount_form.html', context)
             
             form.save(form.instance.username, form.instance.password, school, student_class)
             username = form.cleaned_data.get('username')

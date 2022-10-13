@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import School, Class
+from .models import School, Class, Subject
 from django.core import serializers
 
 # views
@@ -20,8 +20,10 @@ def home(request):
         return render(request, 'manager/teacher_home.html', context)
 
     if request.session['student_acc'] != None:
+        student_json = list(serializers.deserialize('json', request.session['student_acc']))
         context = {
-            'is_student' : True
+            'is_student' : True,
+            'student' : student_json[0].object
         }
         return render(request, 'manager/student_home.html', context)
 
@@ -76,6 +78,15 @@ class ManageSchoolView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     def test_func(self):
         school = self.get_object()
         return self.request.user == school.creator
+
+class SubjectCreateView(LoginRequiredMixin, CreateView):
+    model = Subject
+    fields = ['name']
+
+    def form_valid(self, form):
+        school = School.objects.filter(id=self.kwargs['pk']).first()
+        form.instance.school = school
+        return super().form_valid(form)
 
 # extra functions
 
