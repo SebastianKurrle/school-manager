@@ -19,6 +19,12 @@ def home(request):
         }
         return render(request, 'manager/teacher_home.html', context)
 
+    if request.session['student_acc'] != None:
+        context = {
+            'is_student' : True
+        }
+        return render(request, 'manager/student_home.html', context)
+
     return render(request, 'manager/home.html')
 
 @login_required

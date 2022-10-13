@@ -1,0 +1,14 @@
+{% extends "manager/base.html" %}
+{% block content %}
+    <div class="text-center">
+        <h1>Student Profile</h1>
+
+        <div class="card">
+            <h5 class="card-header">{{ student.username }}</h5>
+            <div class="card-body">
+            <h5 class="card-title">School</h5>
+            <p class="card-text">{{ student.school.school_name }}</p>
+            <a href="{% url 'student-logout' %}" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
+{% endblock content %}

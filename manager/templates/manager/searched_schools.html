@@ -6,7 +6,7 @@
             <div class="card-body">
             <h5 class="card-title">{{ res.school_name }}</h5>
             <a href="{% url 'teacher-login' res.id %}" class="card-link">Login as Teacher</a>
-            <a href="#" class="card-link">Login as Student</a>
+            <a href="{% url 'student-login' res.id %}" class="card-link">Login as Student</a>
             </div>
         </div>
     {% endfor %}

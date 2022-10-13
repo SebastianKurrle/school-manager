@@ -1,3 +1,4 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm, TeacherRegistrationForm, StudentRegistrationForm
 from django.contrib import messages
@@ -97,8 +98,28 @@ def teacher_login(request, pk):
 
     return render(request, 'user/teacher_login.html')
 
+def student_login(request, pk):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        school = School.objects.filter(id=pk).first()
+        check_login = check_student_login(username, password, school)
+
+        if check_login:
+            messages.success(request, f'You are logged in successfuly as {username}')
+            request.session['student_acc'] = serializers.serialize('json', StudentAccount.objects.filter(school=school, username=username))
+            return redirect('home')
+
+        messages.warning(request, f'The username or the password is incorrect')
+
+    return render(request, 'user/student_login.html')
+
 def teacher_logout(request):
     request.session['teacher_acc'] = None
+    return redirect('home')
+
+def student_logout(request):
+    request.session['student_acc'] = None
     return redirect('home')
 
 def teacher_profile(request):
@@ -115,6 +136,21 @@ def teacher_profile(request):
     }
 
     return render(request, 'user/teacher_profile.html', context)
+
+def student_profile(request):
+    is_student = request.session['student_acc'] != None
+    if is_student == False:
+        messages.warning(request, f'You are not loged in as an teacher!')
+        return redirect('home')
+    
+    student_json = list(serializers.deserialize('json', request.session['student_acc']))
+
+    context = {
+        'student' : student_json[0].object,
+        'is_student' : is_student
+    }
+
+    return render(request, 'user/student_profile.html', context)
 
 class UserDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = User
@@ -150,5 +186,13 @@ def check_teacher_login(username, password, school):
         teacher_account = TeacherAccount.objects.filter(school=school, username=username).first()
 
         return teacher_account.password == password
+    
+    return False
+
+def check_student_login(username, password, school):
+    if check_studend_name_exists(username, school):
+        student_account = StudentAccount.objects.filter(school=school, username=username).first()
+
+        return student_account.password == password
     
     return False

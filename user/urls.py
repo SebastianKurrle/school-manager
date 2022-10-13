@@ -12,5 +12,8 @@ urlpatterns = [
     path('school/<int:pk>/teacher/login', user_views.teacher_login, name='teacher-login'),
     path('teacher/logout', user_views.teacher_logout, name='teacher-logout'),
     path('teacher/profile', user_views.teacher_profile, name='teacher-profile'),
-    path('school/<int:pk>/create/student/', user_views.student_register, name='student-create')
+    path('school/<int:pk>/create/student/', user_views.student_register, name='student-create'),
+    path('school/<int:pk>/student/login', user_views.student_login, name='student-login'),
+    path('student/logout/', user_views.student_logout, name='student-logout'),
+    path('student/profile', user_views.student_profile, name='student-profile')
 ]
