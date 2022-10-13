@@ -76,3 +76,6 @@ class ManageSchoolView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 def set_default_cookie(request):
     if 'teacher_acc' not in request.session:
         request.session.setdefault('teacher_acc', None)
+    
+    if 'student_acc' not in request.session:
+        request.session.setdefault('student_acc', None)

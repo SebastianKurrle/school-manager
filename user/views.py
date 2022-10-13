@@ -5,7 +5,7 @@ from django.views.generic import DeleteView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from .models import TeacherAccount, StudentAccount
-from manager.models import School
+from manager.models import School, Class
 from django.core import serializers
 
 #views
@@ -52,10 +52,30 @@ def student_register(request, pk):
         form = StudentRegistrationForm(request.POST)
         if form.is_valid():
             school = School.objects.filter(id=pk).first()
-    else:
-        form = StudentRegistrationForm()
+            student_class = Class.objects.filter(school=school, class_name=request.POST['class']).first()
+            form.instance.school = school
+            form.instance.student_class = student_class
+
+            if check_studend_name_exists(form.instance.username, school):
+                context = {
+                    'form' : StudentRegistrationForm()
+                }
+                messages.warning(request, f'The username already exists!')
+                return render(request, 'user/studentaccount_fomr.html', context)
+            
+            form.save(form.instance.username, form.instance.password, school, student_class)
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'The Studend {username} has been created!')
+            return redirect('school-manage', pk=pk)
     
-    return render(request, 'user/studentaccount_form.html', {'form' : form})
+    form = StudentRegistrationForm()
+    
+    context = {
+        'form' : form,
+        'classes' : Class.objects.filter(school=School.objects.filter(id=pk).first())
+    }
+
+    return render(request, 'user/studentaccount_form.html', context)
 
 def user_info(request):
     return render(request, 'user/user_info.html')
@@ -116,11 +136,11 @@ def check_teacher_name_exists(name, school):
     
     return False
 
-def check_student_name_exists(name, school):
+def check_studend_name_exists(name, school):
     school_students = StudentAccount.objects.filter(school=school)
 
-    for student in school_students:
-        if student.username == name:
+    for studend in school_students:
+        if studend.username == name:
             return True
     
     return False

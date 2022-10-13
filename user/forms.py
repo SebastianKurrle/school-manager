@@ -18,8 +18,10 @@ class TeacherRegistrationForm(forms.ModelForm):
 
 class StudentRegistrationForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
-    student_class = forms.ModelChoiceField(queryset=Class.objects.all())
 
     class Meta:
         model = StudentAccount
-        fields = ['username', 'password', 'student_class']
+        fields = ['username', 'password']
+    
+    def save(self, username, password, school, studend_class):
+        StudentAccount.objects.create(username=username, password=password, school=school, student_class=studend_class)
