@@ -54,6 +54,10 @@ def searched_school(request):
     
     return render(request, 'manager/searched_schools.html')
 
+@login_required
+def create_timetable(request):
+    return render(request, 'manager/create_timetable.html')
+
 class SchoolCreateView(LoginRequiredMixin, CreateView):
     model = School
     fields = ['school_name']

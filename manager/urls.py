@@ -9,5 +9,5 @@ urlpatterns = [
     path('school/search', manager_views.search_school, name='school-search'),
     path('searched/school/', manager_views.searched_school, name='searched-school'),
     path('school/<int:pk>/class/create', manager_views.ClassCreateView.as_view(), name='class-create'),
-    path('school/<int:pk>/subject/create', manager_views.SubjectCreateView.as_view(), name='subject-create')
+    path('school/<int:pk>/subject/create', manager_views.SubjectCreateView.as_view(), name='subject-create'),
 ]
