@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -27,7 +28,18 @@ class Subject(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name + ' ' + self.school.school_name
+        return self.name
 
     def get_absolute_url(self):
         return reverse('home')
+
+class Lesson(models.Model):
+    day = models.IntegerField(default=1)
+    timefrom = models.TimeField()
+    timeto = models.TimeField()
+    s_class = models.ForeignKey(Class, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    teacher = models.ForeignKey('user.TeacherAccount', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.s_class + ' ' + self.subject

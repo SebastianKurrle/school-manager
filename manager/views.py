@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import School, Class, Subject
+from user.models import TeacherAccount
 from django.core import serializers
 
 # views
@@ -55,8 +56,24 @@ def searched_school(request):
     return render(request, 'manager/searched_schools.html')
 
 @login_required
-def create_timetable(request):
-    return render(request, 'manager/create_timetable.html')
+def create_timetable(request, pk):
+    school = School.objects.filter(id=pk).first()
+
+    if request.method == 'POST':
+        day = request.POST['day']
+        s_class = request.POST['class']
+        subject = request.POST['subject']
+        teacher = request.POST['teacher']
+        timefrom = request.POST['timefrom']
+        timeto = request.POST['timeto']
+
+    context = {
+        'classes' : Class.objects.filter(school=school),
+        'subjects' : Subject.objects.filter(school=school),
+        'teacher' : TeacherAccount.objects.filter(school=school)
+    }
+
+    return render(request, 'manager/create_timetable.html', context)
 
 class SchoolCreateView(LoginRequiredMixin, CreateView):
     model = School

@@ -1,4 +1,48 @@
 {% extends "manager/base.html" %}
 {% block content %}
-    <h1>Create Timetable</h1>
+    <h1 class="text-center">Create Timetable</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="border p-3">
+            <label for="day" class="form-label">Day</label>
+            <select name="day" id="day" class="form-select mb-3">
+                <option value="1">Monday</option>
+                <option value="2">Tuesday</option>
+                <option value="3">Wednesday</option>
+                <option value="4">Thursday</option>
+                <option value="5">Friday</option>
+            </select>
+
+            <label for="class" class="form-label">Class</label>
+            <select name="class" id="class" class="form-select mb-3">
+                {% for class in classes %}
+                    <option value="{{ class.id }}">{{ class.class_name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="subject" class="form-label">Subject</label>
+            <select name="subject" id="subject" class="form-select mb-3">
+                {% for subject in subjects %}
+                    <option value="{{ subject.id }}">{{ subject.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="teacher" class="fomr-label">Teacher</label>
+            <select name="teacher" id="teacher" class="form-select mb-3">
+                {% for teacher in teacher %}
+                    <option value="{{ teacher.id }}">{{ teacher.username }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="timefrom" class="form-label">Time from</label>
+            <input type="time" name="timefrom" id="timefrom" class="form-control mb-3">
+
+            <label for="timeto" class="form-label">Time to</label>
+            <input type="time" name="timeto" id="timeto" class="form-control mb-3">
+
+            <button class="btn btn-success">Create</button>
+        </div>
+    </form>
 {% endblock content %}
