@@ -6,6 +6,7 @@ from .models import School, Class, Subject, Lesson
 from user.models import TeacherAccount
 from django.core import serializers
 from django.contrib import messages
+import json
 
 # views
 
@@ -84,6 +85,16 @@ def create_timetable(request, pk):
 
     return render(request, 'manager/create_timetable.html', context)
 
+def student_timetable(request):
+    student = get_student(request)
+    lessons = Lesson.objects.filter(school=student.school, s_class=student.student_class)
+
+    context = {
+        'lessons' : serializers.serialize('json', lessons)
+    }
+
+    return render(request, 'manager/student_timetable.html', context)
+
 class SchoolCreateView(LoginRequiredMixin, CreateView):
     model = School
     fields = ['school_name']
@@ -129,3 +140,7 @@ def set_default_cookie(request):
 
 def check_lesson_exists(school, s_class, timefrom, day):
     return len(Lesson.objects.filter(school=school, s_class=s_class, timefrom=timefrom, day=day)) == 1
+
+def get_student(request):
+    student_json = list(serializers.deserialize('json', request.session['student_acc']))
+    return student_json[0].object

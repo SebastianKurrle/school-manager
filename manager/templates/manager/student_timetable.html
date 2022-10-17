@@ -1,0 +1,30 @@
+{% extends "manager/base.html" %}
+{% load static %}
+{% block content %}
+<h1>Student Timetable</h1>
+
+<div id="timetable"></div>
+
+<script>
+    const json_lessons = JSON.parse('{{ lessons|escapejs }}')
+    const lessons = []
+
+    const calendarEl = document.getElementById('timetable');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+
+        headerToolbar: {
+            center: 'timeGridWeek,timeGridDay'
+        },
+    });
+    calendar.render();
+
+    const fill_lesons = () => {
+        json_lessons.forEach(lesson => {
+            console.log(lesson.fields)
+        });
+    }
+
+    fill_lesons()
+</script>
+{% endblock content %}

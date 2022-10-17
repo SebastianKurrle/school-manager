@@ -10,5 +10,6 @@ urlpatterns = [
     path('searched/school/', manager_views.searched_school, name='searched-school'),
     path('school/<int:pk>/class/create', manager_views.ClassCreateView.as_view(), name='class-create'),
     path('school/<int:pk>/subject/create', manager_views.SubjectCreateView.as_view(), name='subject-create'),
-    path('school/<int:pk>/timetable/create/', manager_views.create_timetable, name='timetable-create')
+    path('school/<int:pk>/timetable/create/', manager_views.create_timetable, name='timetable-create'),
+    path('student/timetable/', manager_views.student_timetable, name='student-timetable')
 ]
