@@ -37,9 +37,10 @@ class Lesson(models.Model):
     day = models.IntegerField(default=1)
     timefrom = models.TimeField()
     timeto = models.TimeField()
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
     s_class = models.ForeignKey(Class, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     teacher = models.ForeignKey('user.TeacherAccount', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.s_class + ' ' + self.subject
+        return self.s_class.class_name + ' ' + self.subject.name

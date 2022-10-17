@@ -2,9 +2,10 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import School, Class, Subject
+from .models import School, Class, Subject, Lesson
 from user.models import TeacherAccount
 from django.core import serializers
+from django.contrib import messages
 
 # views
 
@@ -67,6 +68,14 @@ def create_timetable(request, pk):
         timefrom = request.POST['timefrom']
         timeto = request.POST['timeto']
 
+        if check_lesson_exists(school, s_class, timefrom, day):
+            messages.warning(request, 'In this timezone there is already an lesson which exists')
+            return redirect('timetable-create', pk=school.id)
+        
+        Lesson.objects.create(day=day, timefrom=timefrom, timeto=timeto, school=school, s_class=Class.objects.filter(id=s_class).first(), 
+        subject=Subject.objects.filter(id=subject).first(), teacher=TeacherAccount.objects.filter(id=teacher).first())
+        messages.success(request, 'The lesson has been created')
+
     context = {
         'classes' : Class.objects.filter(school=school),
         'subjects' : Subject.objects.filter(school=school),
@@ -117,3 +126,6 @@ def set_default_cookie(request):
     
     if 'student_acc' not in request.session:
         request.session.setdefault('student_acc', None)
+
+def check_lesson_exists(school, s_class, timefrom, day):
+    return len(Lesson.objects.filter(school=school, s_class=s_class, timefrom=timefrom, day=day)) == 1
