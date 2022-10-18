@@ -90,9 +90,8 @@ def student_timetable(request):
     lessons = Lesson.objects.filter(school=student.school, s_class=student.student_class)
 
     context = {
-        'lessons' : serializers.serialize('json', lessons)
+        'lessons' : json.dumps(get_lessons_list(student, lessons))
     }
-
     return render(request, 'manager/student_timetable.html', context)
 
 class SchoolCreateView(LoginRequiredMixin, CreateView):
@@ -144,3 +143,23 @@ def check_lesson_exists(school, s_class, timefrom, day):
 def get_student(request):
     student_json = list(serializers.deserialize('json', request.session['student_acc']))
     return student_json[0].object
+
+def get_lessons_list(student, lessons):
+    lessons_list = []
+    school = School.objects.filter(id=student.school.id).first()
+    s_class = Class.objects.filter(id=student.student_class.id).first()
+
+    for lesson in lessons:
+        teacher = TeacherAccount.objects.filter(id=lesson.teacher.id).first()
+        subject = Subject.objects.filter(id=lesson.subject.id).first()
+        lessons_list.append({
+            'school': school.school_name,
+            's_class': s_class.class_name,
+            'teacher': teacher.username,
+            'subject' : subject.name,
+            'day': lesson.day,
+            'timefrom' : str(lesson.timefrom),
+            'timeto' : str(lesson.timeto)
+        })
+
+    return lessons_list
