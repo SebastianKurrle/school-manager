@@ -40,7 +40,7 @@
                         </li>
                     {% elif is_teacher %}
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Teacher Timetable</a>
+                            <a class="nav-link active" aria-current="page" href="{% url 'teacher-timetable' %}">Teacher Timetable</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{% url 'teacher-profile' %}">Profile</a>

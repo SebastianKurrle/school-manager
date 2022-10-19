@@ -31,7 +31,7 @@ let timetable = new FullCalendar.Calendar(timetableEl, {
     initialView: 'timeGridWeek',
 
     headerToolbar: {
-        center: 'dayGridWeek,timeGridDay'
+        center: 'timeGridWeek,timeGridDay'
     },
 
     events: lessons
