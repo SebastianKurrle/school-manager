@@ -16,7 +16,7 @@ const fill_lesons = () => {
             groupId: lesson.subject,
             startRecur: Date('2022-09-13'),
             endRecur: Date('2023-07-28'),
-            title: `${lesson.subject}(${lesson.teacher})`,
+            title: `${lesson.subject}(${lesson.s_class})`,
             startTime: lesson.timefrom,
             endTime: lesson.timeto,
             daysOfWeek: [lesson.day],

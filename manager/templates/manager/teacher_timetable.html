@@ -2,8 +2,8 @@
 {% load static %}
 {% block content %}
 
-{% if is_student %}
-    <h1>Student Timetable</h1>
+{% if is_teacher %}
+    <h1>Teacher Timetable</h1>
 
     <div id="timetable"></div>
 {% else %}
@@ -13,5 +13,5 @@
 <script>
     const json_lessons = JSON.parse('{{ lessons|escapejs }}')
 </script>
-<script src="{% static 'manager/student_timetable.js' %}"></script>
+<script src="{% static 'manager/teacher_timetable.js' %}"></script>
 {% endblock content %}
