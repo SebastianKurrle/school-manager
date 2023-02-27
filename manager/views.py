@@ -124,7 +124,10 @@ def teacher_timetable(request):
         return render(request, 'manager/teacher_timetable.html', context)
     
     messages.warning(request, 'You are not logged in as an teacher')
-    return render('manager/teacher_timetable.html')
+    return render(request, 'manager/teacher_timetable.html')
+
+def create_exam_date(request):
+    pass
 
 class SchoolCreateView(LoginRequiredMixin, CreateView):
     model = School
@@ -133,7 +136,6 @@ class SchoolCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.creator = self.request.user
         return super().form_valid(form)
-
 
 class ClassCreateView(LoginRequiredMixin, CreateView):
     model = Class
