@@ -1,26 +1,17 @@
-# Schulmanager
+# School Manager App
 
-Mit dieser Software können Schulen Accounts für
+Welcome to the School Manager App repository. This application is designed to assist in the efficient management of school-related tasks, including student information, courses, and academic progress.
 
-- Lehrer
-- Schüler
+## Features
 
-erstellen und diese dann verwalten. Es können Klassen erstellt werden sowie Fächer.
-Lehrer können Klassen zugeteilt werden mit dem entsprechenden Fach
-Ebenfalls können Stundenpläne für die Klassen erstellt werden welcher dann auch angezeigt wird
-Der Stundenplan wird dann auch individuell bei den Lehrer angezeigt welche dann sehen wann, in welchem Fach
-und welche Klasse sie Unterrichten müssen
+- **Student Information:** Store and manage student details comprehensively.
+- **Course Management:** Easily handle course creation, enrollment, and progress tracking.
+- **User-Friendly Interface:** Intuitive design for straightforward navigation and data input.
 
-### Technologien die für dieses Projekt benutzt wurden
+### Student Management:
 
-> Frontend
+1. Navigate to the app and access the "Students" section.
+2. Add, edit, or remove student information as needed.
 
-- Django Templatesyntax
-- FullCalendar
-
-> Backend
-
-- Django
-
-**Link zur Seite:**
+## Link
 https://school-manager.sebastiankurrle-projects.de/
